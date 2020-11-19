@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#191926">
@@ -184,7 +189,7 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         app:layout_constraintEnd_toStartOf="@+id/imageView8"
@@ -195,7 +200,7 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
@@ -207,7 +212,7 @@
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -218,7 +223,7 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         app:layout_constraintEnd_toStartOf="@+id/imageView9"
@@ -229,10 +234,11 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/roboto_black"
+        android:gravity="center_horizontal"
         android:text="@string/robert_downey_jr"
         android:textColor="#D8D8D8"
         android:textSize="12sp"
@@ -243,10 +249,11 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/roboto_black"
+        android:gravity="center_horizontal"
         android:text="@string/mark_ruffalo"
         android:textColor="#D8D8D8"
         android:textSize="12sp"
@@ -257,10 +264,11 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/roboto_black"
+        android:gravity="center_horizontal"
         android:text="@string/chris_hemsworth"
         android:textColor="#D8D8D8"
         android:textSize="12sp"
@@ -270,10 +278,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:fontFamily="@font/roboto_black"
+        android:gravity="center_horizontal"
         android:text="@string/chris_evans"
         android:textColor="#D8D8D8"
         android:textSize="12sp"
@@ -285,3 +294,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
