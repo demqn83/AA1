@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/poster_image_view"
-            android:layout_width="414dp"
+            android:layout_width="0dp"
             android:layout_height="298dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
@@ -157,8 +157,9 @@
             app:layout_constraintStart_toStartOf="@+id/chain_start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/film_name_text_view" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/actor_photo_2_image_view"
+            app:shapeAppearance="@style/rectangleImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="7dp"
@@ -170,9 +171,9 @@
             app:layout_constraintTop_toBottomOf="@+id/cast_text_view"
             app:srcCompat="@drawable/chris_evans" />
 
-
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/actor_photo_1_image_view"
+            app:shapeAppearance="@style/rectangleImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="7dp"
@@ -185,8 +186,9 @@
             app:layout_constraintTop_toBottomOf="@+id/cast_text_view"
             app:srcCompat="@drawable/robert_downey_jr" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/actor_photo_4_image_view"
+            app:shapeAppearance="@style/rectangleImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="7dp"
@@ -197,8 +199,9 @@
             app:layout_constraintTop_toBottomOf="@+id/cast_text_view"
             app:srcCompat="@drawable/chris_hemsworth" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/actor_photo_3_image_view"
+            app:shapeAppearance="@style/rectangleImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="7dp"
