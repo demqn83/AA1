@@ -7,14 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 
 
 class FragmentMoviesList : Fragment() {
 
-    private var imageview_poster: ImageView? = null
     private var listener: TransactionsFragmentClicks? = null
+    private var colorLike:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,21 +27,27 @@ class FragmentMoviesList : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies_list, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        imageview_poster = view.findViewById<ImageView>(R.id.poster_avenger_image_view).apply {
-//            setOnClickListener {
-//                listener?.addMovieDetails()
-//            }
-//        }
-        view.setOnClickListener {
+        val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
+        view.findViewById<ImageView>(R.id.ic_bg_image_view).setOnClickListener {
             listener?.addMovieDetails()
         }
 
+        var likeImageView = view.findViewById<ImageView>(R.id.ic_like_image_view);
+        likeImageView.setOnClickListener {
+            if (colorLike) {
+                colorLike = false
+                DrawableCompat.setTint(likeImageView.getDrawable(), ContextCompat.getColor(container!!.context, R.color.white));
+            } else {
+                colorLike = true
+                DrawableCompat.setTint(likeImageView.getDrawable(), ContextCompat.getColor(container!!.context, R.color.radical_red));
+            }
+
+//            DrawableCompat.setTint(likeImageView.getDrawable(), ContextCompat.getColor(container!!.context, R.color.radical_red));
+//            val toast = Toast.makeText(context, colorLike.toString(), Toast.LENGTH_LONG)
+//            toast.show()
+        }
+
+         return view
     }
 
     override fun onAttach(context: Context) {
@@ -49,10 +58,6 @@ class FragmentMoviesList : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    fun setClickListener(l: TransactionsFragmentClicks?) {
-        listener = l
     }
 
     interface TransactionsFragmentClicks {

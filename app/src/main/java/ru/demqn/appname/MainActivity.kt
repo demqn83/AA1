@@ -1,35 +1,49 @@
 package ru.demqn.appname
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks {
+class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks, FragmentMoviesDetails.ExitFragmentClicks {
 
-    private val rootFragment =
-        FragmentMoviesList().apply { setClickListener(this@MainActivity) }
+    private var fragmentMoviesList: FragmentMoviesList? = null
+    private var fragmentMoviesDetails: FragmentMoviesDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().apply {
-    //            add(R.id.container_view, FragmentMoviesList())
-                add(R.id.container_view, rootFragment)
-                commit()
+        if (savedInstanceState == null){
+            fragmentMoviesList = FragmentMoviesList()
+            fragmentMoviesList?.apply {
+                supportFragmentManager.beginTransaction()
+                        .addToBackStack(null)
+                        .add(R.id.container_view, this, FRAGMENT_MOVIE_LIST_TAG)
+                        .commit()
             }
+        } else {
+            fragmentMoviesList =
+                supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
+    }
+}
+
+    override fun addMovieDetails() {
+
+        fragmentMoviesDetails = FragmentMoviesDetails()
+        fragmentMoviesDetails?.apply {
+            supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.container_view, this, FRAGMENT_MOVIE_DETAILS_TAG)
+                    .commit()
         }
     }
 
-    override fun addMovieDetails() {
-//        val toast = Toast.makeText(applicationContext, "Popal", Toast.LENGTH_LONG)
-//        toast.show()
-        supportFragmentManager.beginTransaction().apply {
-            addToBackStack(null)
-            replace(R.id.container_view, FragmentMoviesDetails())
-            commit()
-        }
+    override fun exitFragment() {
+        supportFragmentManager.popBackStack()
+    }
+
+    companion object {
+        const val FRAGMENT_MOVIE_LIST_TAG = "FragmentMoviesList"
+        const val FRAGMENT_MOVIE_DETAILS_TAG = "FragmentMoviesDetails"
     }
 }
