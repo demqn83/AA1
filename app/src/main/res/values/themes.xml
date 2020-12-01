@@ -17,5 +17,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">4dp</item>
     </style>
+    <style name="customRatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+        <item name="maxHeight">8dp</item>
+    </style>
 <!--    <corners android:radius="4dp" />-->
 </resources>
