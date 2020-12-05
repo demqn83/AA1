@@ -1,7 +1,6 @@
 package ru.demqn.appname
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks, FragmentMoviesDetails.ExitFragmentClicks {
@@ -27,9 +26,11 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
     }
 }
 
-    override fun addMovieDetails() {
-
+    override fun addMovieDetails(position:Int) {
+        val bundle = Bundle()
+        bundle.putInt("position", position)
         fragmentMoviesDetails = FragmentMoviesDetails()
+        fragmentMoviesDetails!!.arguments = bundle
         fragmentMoviesDetails?.apply {
             supportFragmentManager.beginTransaction()
                     .addToBackStack(null)

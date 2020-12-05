@@ -95,7 +95,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tag_line_text_view"
+            android:id="@+id/movie_genre_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -286,7 +286,7 @@
             android:progressTint="@color/radical_red"
             android:rating="4"
             app:layout_constraintStart_toStartOf="@+id/chain_start_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/tag_line_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/movie_genre_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
