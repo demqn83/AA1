@@ -64,13 +64,7 @@ class DataViewHolder(itemView: View, private var listener: FragmentMoviesList.Tr
         }
 
         like?.setOnClickListener {
-            if (movie.like) {
-                movie.like = false
-                like?.setColorFilter(ContextCompat.getColor(itemView.context, R.color.white))
-            } else {
-                movie.like = true
-                like?.setColorFilter(ContextCompat.getColor(itemView.context, R.color.radical_red))
-            }
+            listener.clickLike(position)
         }
 
         itemView.findViewById<ImageView>(R.id.ic_bg_image_view).setOnClickListener {

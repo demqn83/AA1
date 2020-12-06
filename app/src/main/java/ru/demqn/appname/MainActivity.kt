@@ -39,6 +39,12 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         }
     }
 
+    override fun clickLike(position: Int) {
+        var movie: Movie = FakeMovies().getMoviesById(position)
+        movie.like = !movie.like
+        fragmentMoviesList?.adapterList?.notifyItemChanged(position)
+    }
+
     override fun exitFragment() {
         supportFragmentManager.popBackStack()
     }

@@ -15,6 +15,7 @@ class FragmentMoviesList() : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
     private var colorLike:Boolean = false
+    var adapterList:MoviesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,11 @@ class FragmentMoviesList() : Fragment() {
         val list = view.findViewById<RecyclerView>(R.id.list_movies_recycler_view)
 //        val movies = FakeMovies().getListMovies()
 //        val adapter = MoviesAdapter(container!!.context, movies, listener!!)
-        val adapter = MoviesAdapter(container!!.context, listener!!)
-        list.adapter = adapter
+//        val adapter = MoviesAdapter(container!!.context, listener!!)
+//        list.adapter = adapter
+//        list.layoutManager = GridLayoutManager(container!!.context, 2)
+        adapterList = MoviesAdapter(container!!.context, listener!!)
+        list.adapter = adapterList
         list.layoutManager = GridLayoutManager(container!!.context, 2)
 
         return view
@@ -48,5 +52,6 @@ class FragmentMoviesList() : Fragment() {
 
     interface TransactionsFragmentClicks {
         fun addMovieDetails(position:Int)
+        fun clickLike(position:Int)
     }
 }
