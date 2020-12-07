@@ -12,8 +12,8 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null){
-            fragmentMoviesList = FragmentMoviesList()
+        if (savedInstanceState == null) {
+            fragmentMoviesList = FragmentMoviesList.newInstance()
             fragmentMoviesList?.apply {
                 supportFragmentManager.beginTransaction()
                         .addToBackStack(null)
@@ -22,27 +22,18 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
             }
         } else {
             fragmentMoviesList =
-                supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
+                    supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
+        }
     }
-}
 
-    override fun addMovieDetails(position:Int) {
-        val bundle = Bundle()
-        bundle.putInt("position", position)
-        fragmentMoviesDetails = FragmentMoviesDetails()
-        fragmentMoviesDetails!!.arguments = bundle
+    override fun addMovieDetails(id_movie: Int) {
+        fragmentMoviesDetails = FragmentMoviesDetails.newInstance(id_movie)
         fragmentMoviesDetails?.apply {
             supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.container_view, this, FRAGMENT_MOVIE_DETAILS_TAG)
                     .commit()
         }
-    }
-
-    override fun clickLike(position: Int) {
-        var movie: Movie = FakeMovies().getMoviesById(position)
-        movie.like = !movie.like
-        fragmentMoviesList?.adapterList?.notifyItemChanged(position)
     }
 
     override fun exitFragment() {

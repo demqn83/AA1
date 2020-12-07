@@ -9,34 +9,32 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class ActorsAdapter(context: Context, var actors:List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>(){
+class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
 
-    private val inflater : LayoutInflater = LayoutInflater.from(context)
-
-    fun getItem(position: Int) : Actor = actors[position]
+    fun getItem(position: Int): Actor = actors[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
-        return ActorsViewHolder(inflater.inflate(R.layout.view_holder_actor, parent, false))
+        return ActorsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false))
     }
 
     override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) {
-        holder.Bind(getItem(position))
+        holder.bind(getItem(position))
     }
 
     override fun getItemCount(): Int = actors.size
 }
 
-class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-    private val nameActor: TextView? = itemView.findViewById(R.id.actor_name_text_view)
-    private val photoActor: ImageView? = itemView.findViewById(R.id.actor_photo_image_view)
+class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val nameActor: TextView = itemView.findViewById(R.id.actor_name_text_view)
+    private val photoActor: ImageView = itemView.findViewById(R.id.actor_photo_image_view)
 
-    fun Bind(actor: Actor) {
-        nameActor?.text = actor.nameActor
+    fun bind(actor: Actor) {
+        nameActor.text = actor.nameActor
         Glide
-            .with(itemView.context)
-            .load(actor.photoActor)
-            .override(80, 80)
+                .with(itemView.context)
+                .load(actor.photoActor)
+//            .override(80, 80)
 //            .placeholder(R.drawable.chris_hemsworth)
-            .into(photoActor!!)
+                .into(photoActor)
     }
 }

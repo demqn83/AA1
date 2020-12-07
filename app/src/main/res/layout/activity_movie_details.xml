@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:fontFamily="@font/roboto_black"
-            android:text="@string/_125_reviews"
+            android:text="@string/reviews"
             android:textColor="@color/storm_gray"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/rating_bar"

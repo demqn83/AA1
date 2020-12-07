@@ -1,8 +1,5 @@
 package ru.demqn.appname
 
-class MoviesDataSource {
-}
-
 private val listActors = listOf<Actor>(
         Actor(
                 1,
