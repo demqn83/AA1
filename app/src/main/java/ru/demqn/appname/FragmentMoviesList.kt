@@ -52,7 +52,7 @@ class FragmentMoviesList : Fragment() {
 
         override fun clickLike(movieId: Int) {
             movies[movieId] = movies[movieId].copy(like = !movies[movieId].like)
-            adapterList?.notifyDataSetChanged()
+            adapterList?.notifyItemChanged(movieId)
         }
     }
 
