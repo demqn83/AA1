@@ -8,7 +8,7 @@ data class Movie(
         val rating: Double,
         val movieGenre: String,
         val rated: String,
-        var like: Boolean,
+        val like: Boolean,
         val detailPoster: String,
         val poster: String,
         val description: String,

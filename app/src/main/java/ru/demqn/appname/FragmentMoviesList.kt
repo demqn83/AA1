@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 class FragmentMoviesList : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
-//    private var adapterList: MoviesAdapter? = null
+    private val movies = FakeMovies().getListMovies().toMutableList()
+    private var adapterList: MoviesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +28,7 @@ class FragmentMoviesList : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
         val list = view.findViewById<RecyclerView>(R.id.list_movies_recycler_view)
-        val movies = FakeMovies().getListMovies()
-        val adapterList = MoviesAdapter(movies, listener!!)
+        adapterList = MoviesAdapter(movies = movies, listener = clickListMovies)
         list.adapter = adapterList
         list.layoutManager = GridLayoutManager(requireContext(), 2)
 
@@ -43,6 +43,17 @@ class FragmentMoviesList : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    private val clickListMovies = object : ClickListMovies {
+        override fun clickAddMovieDetails(movieId: Int) {
+            listener?.addMovieDetails(movieId)
+        }
+
+        override fun clickLike(movieId: Int) {
+            movies[movieId] = movies[movieId].copy(like = !movies[movieId].like)
+            adapterList?.notifyDataSetChanged()
+        }
     }
 
     companion object {

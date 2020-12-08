@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class MoviesAdapter(private val movies:List<Movie>, private var listener: FragmentMoviesList.TransactionsFragmentClicks) :
+class MoviesAdapter(private val movies:List<Movie>, private var listener: ClickListMovies) :
         RecyclerView.Adapter<DataViewHolder>() {
 
     fun getItem(position: Int): Movie = movies[position]
@@ -27,7 +27,7 @@ class MoviesAdapter(private val movies:List<Movie>, private var listener: Fragme
     override fun getItemCount(): Int = movies.size
 }
 
-class DataViewHolder(itemView: View, private var listener: FragmentMoviesList.TransactionsFragmentClicks) : RecyclerView.ViewHolder(itemView) {
+class DataViewHolder(itemView: View, private var listener: ClickListMovies) : RecyclerView.ViewHolder(itemView) {
     private val nameMovie: TextView = itemView.findViewById(R.id.nameMovie_text_view)
     private val movieDuration: TextView = itemView.findViewById(R.id.film_duration_text_view)
     private val reviews: TextView = itemView.findViewById(R.id.description_rating_text_view)
@@ -39,8 +39,8 @@ class DataViewHolder(itemView: View, private var listener: FragmentMoviesList.Tr
 
     fun bind(movie: Movie, position: Int) {
         nameMovie.text = movie.nameMovie
-        movieDuration.text = "${movie.movieDuration} ${itemView.resources.getString(R.string.min)}"
-        reviews.text = "${movie.reviews} ${itemView.resources.getString(R.string.reviews)}"
+        movieDuration.text = itemView.resources.getString(R.string.min, movie.movieDuration)
+        reviews.text = itemView.resources.getString(R.string.reviews, movie.reviews)
         movieGenre.text = movie.movieGenre
         rated.text = movie.rated
         rating.rating = movie.rating.toFloat()
@@ -51,24 +51,22 @@ class DataViewHolder(itemView: View, private var listener: FragmentMoviesList.Tr
                 .load(movie.poster)
 //                .override(125, 185)
 //            .placeholder(R.drawable.chris_hemsworth)
-                .into(poster);
+                .into(poster)
 
         val likeColor = if (movie.like) R.color.radical_red else R.color.white
         like.setColorFilter(ContextCompat.getColor(itemView.context, likeColor))
 
         like.setOnClickListener {
-
-            if (movie.like) {
-                like.setColorFilter(ContextCompat.getColor(itemView.context, R.color.white))
-                movie.like=false
-            } else {
-                like.setColorFilter(ContextCompat.getColor(itemView.context, R.color.radical_red))
-                movie.like=true
-            }
+            listener.clickLike(position)
         }
 
         itemView.setOnClickListener {
-            listener?.addMovieDetails(position)
+            listener.clickAddMovieDetails(position)
         }
     }
+}
+
+interface ClickListMovies{
+    fun clickAddMovieDetails(movieId:Int)
+    fun clickLike(movieId:Int)
 }
