@@ -39,7 +39,7 @@ class FragmentMoviesDetails : Fragment() {
 
         val movie = FakeMovies().getMoviesById(movie_id!!)
         nameMovie.text = movie.nameMovie
-        reviews.text = "${movie.reviews} ${resources.getString(R.string.reviews)}"
+        reviews.text = resources.getString(R.string.reviews, movie.reviews)
         rating.rating = movie.rating.toFloat()
         movieGenre.text = movie.movieGenre
         rated.text = movie.rated
