@@ -6,16 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.demqn.appname.data.Movie
+import ru.demqn.appname.data.loadMovies
 
 
 class FragmentMoviesList : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
-    private val movies = FakeMovies().getListMovies().toMutableList()
+//    private val movies = FakeMovies().getListMovies().toMutableList()
+    private val movies: List<Movie> = listOf()
     private var adapterList: MoviesAdapter? = null
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +36,11 @@ class FragmentMoviesList : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
         val list = view.findViewById<RecyclerView>(R.id.list_movies_recycler_view)
-        adapterList = MoviesAdapter(movies = movies, listener = clickListMovies)
+        adapterList = MoviesAdapter(movies, clickListMovies)
         list.adapter = adapterList
         list.layoutManager = GridLayoutManager(requireContext(), 2)
 
+        scope.launch { updtListMovies() }
         return view
     }
 
@@ -51,9 +60,19 @@ class FragmentMoviesList : Fragment() {
         }
 
         override fun clickLike(movieId: Int) {
-            movies[movieId] = movies[movieId].copy(like = !movies[movieId].like)
-            adapterList?.notifyItemChanged(movieId)
+//            movies[movieId] = movies[movieId].copy(like = !movies[movieId].like)
+//            adapterList?.notifyItemChanged(movieId)
         }
+    }
+
+    suspend fun updtListMovies() = withContext(Dispatchers.Main) {
+//        Toast.makeText(context, "Начало", Toast.LENGTH_SHORT).show()
+        var shuffledList = loadMovies(requireContext()).filter { it.ratings <= 5 }
+        adapterList!!.bindMovies(shuffledList!!)
+        val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(adapterList!!)
+//        Toast.makeText(context, "Конец", Toast.LENGTH_SHORT).show()
     }
 
     companion object {
