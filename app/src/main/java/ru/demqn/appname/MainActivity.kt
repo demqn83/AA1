@@ -1,7 +1,6 @@
 package ru.demqn.appname
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks, FragmentMoviesDetails.ExitFragmentClicks {
@@ -13,8 +12,8 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null){
-            fragmentMoviesList = FragmentMoviesList()
+        if (savedInstanceState == null) {
+            fragmentMoviesList = FragmentMoviesList.newInstance()
             fragmentMoviesList?.apply {
                 supportFragmentManager.beginTransaction()
                         .addToBackStack(null)
@@ -23,13 +22,12 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
             }
         } else {
             fragmentMoviesList =
-                supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
+                    supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
+        }
     }
-}
 
-    override fun addMovieDetails() {
-
-        fragmentMoviesDetails = FragmentMoviesDetails()
+    override fun addMovieDetails(id_movie: Int) {
+        fragmentMoviesDetails = FragmentMoviesDetails.newInstance(id_movie)
         fragmentMoviesDetails?.apply {
             supportFragmentManager.beginTransaction()
                     .addToBackStack(null)

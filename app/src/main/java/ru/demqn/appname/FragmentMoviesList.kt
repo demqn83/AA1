@@ -5,49 +5,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 
 class FragmentMoviesList : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
-    private var colorLike:Boolean = false
+    private val movies = FakeMovies().getListMovies().toMutableList()
+    private var adapterList: MoviesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        view.findViewById<ImageView>(R.id.ic_bg_image_view).setOnClickListener {
-            listener?.addMovieDetails()
-        }
 
-        var likeImageView = view.findViewById<ImageView>(R.id.ic_like_image_view);
-        likeImageView.setOnClickListener {
-            if (colorLike) {
-                colorLike = false
-                DrawableCompat.setTint(likeImageView.getDrawable(), ContextCompat.getColor(container!!.context, R.color.white));
-            } else {
-                colorLike = true
-                DrawableCompat.setTint(likeImageView.getDrawable(), ContextCompat.getColor(container!!.context, R.color.radical_red));
-            }
+        val list = view.findViewById<RecyclerView>(R.id.list_movies_recycler_view)
+        adapterList = MoviesAdapter(movies = movies, listener = clickListMovies)
+        list.adapter = adapterList
+        list.layoutManager = GridLayoutManager(requireContext(), 2)
 
-//            DrawableCompat.setTint(likeImageView.getDrawable(), ContextCompat.getColor(container!!.context, R.color.radical_red));
-//            val toast = Toast.makeText(context, colorLike.toString(), Toast.LENGTH_LONG)
-//            toast.show()
-        }
-
-         return view
+        return view
     }
 
     override fun onAttach(context: Context) {
@@ -60,7 +45,22 @@ class FragmentMoviesList : Fragment() {
         listener = null
     }
 
+    private val clickListMovies = object : ClickListMovies {
+        override fun clickAddMovieDetails(movieId: Int) {
+            listener?.addMovieDetails(movieId)
+        }
+
+        override fun clickLike(movieId: Int) {
+            movies[movieId] = movies[movieId].copy(like = !movies[movieId].like)
+            adapterList?.notifyItemChanged(movieId)
+        }
+    }
+
+    companion object {
+        fun newInstance() = FragmentMoviesList()
+    }
+
     interface TransactionsFragmentClicks {
-        fun addMovieDetails()
+        fun addMovieDetails(movie_id: Int)
     }
 }
