@@ -8,10 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.demqn.appname.data.Actor
 
-class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
+class ActorsAdapter(var actors: List<ru.demqn.appname.data.Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
 
-    fun getItem(position: Int): Actor = actors[position]
+    fun getItem(position: Int): ru.demqn.appname.data.Actor = actors[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
         return ActorsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false))
@@ -29,12 +30,10 @@ class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val photoActor: ImageView = itemView.findViewById(R.id.actor_photo_image_view)
 
     fun bind(actor: Actor) {
-        nameActor.text = actor.nameActor
+        nameActor.text = actor.name
         Glide
                 .with(itemView.context)
-                .load(actor.photoActor)
-//            .override(80, 80)
-//            .placeholder(R.drawable.chris_hemsworth)
+                .load(actor.picture)
                 .into(photoActor)
     }
 }

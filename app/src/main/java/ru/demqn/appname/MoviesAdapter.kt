@@ -51,16 +51,7 @@ class DataViewHolder(itemView: View, private var listener: ClickListMovies) : Re
         Glide
                 .with(itemView.context)
                 .load(movie.poster)
-//                .override(125, 185)
-//            .placeholder(R.drawable.chris_hemsworth)
                 .into(poster)
-
-//        val likeColor = if (movie.like) R.color.radical_red else R.color.white
-//        like.setColorFilter(ContextCompat.getColor(itemView.context, likeColor))
-//
-//        like.setOnClickListener {
-//            listener.clickLike(position)
-//        }
 
         itemView.setOnClickListener {
             listener.clickAddMovieDetails(position)

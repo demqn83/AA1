@@ -2,6 +2,7 @@ package ru.demqn.appname
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.demqn.appname.data.Movie
 
 class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks, FragmentMoviesDetails.ExitFragmentClicks {
 
@@ -26,8 +27,8 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         }
     }
 
-    override fun addMovieDetails(id_movie: Int) {
-        fragmentMoviesDetails = FragmentMoviesDetails.newInstance(id_movie)
+    override fun addMovieDetails(movieId: Int) {
+        fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movieId)
         fragmentMoviesDetails?.apply {
             supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
 
     override fun exitFragment() {
         supportFragmentManager.popBackStack()
+    }
+
+    public fun getMovieIdKey(movieId:Int): Movie {
+        return fragmentMoviesList!!.movies.get(movieId)
     }
 
     companion object {

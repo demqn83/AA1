@@ -20,9 +20,8 @@ import ru.demqn.appname.data.loadMovies
 class FragmentMoviesList : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
-//    private val movies = FakeMovies().getListMovies().toMutableList()
-    private val movies: List<Movie> = listOf()
-    private var adapterList: MoviesAdapter? = null
+    var movies: List<Movie> = listOf()
+    private lateinit var adapterList: MoviesAdapter
     private val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,13 +65,12 @@ class FragmentMoviesList : Fragment() {
     }
 
     suspend fun updtListMovies() = withContext(Dispatchers.Main) {
-//        Toast.makeText(context, "Начало", Toast.LENGTH_SHORT).show()
-        var shuffledList = loadMovies(requireContext()).filter { it.ratings <= 5 }
-        adapterList!!.bindMovies(shuffledList!!)
+        var shuffledList = loadMovies(requireContext()).map {it.copy(ratings = (it.ratings / 2))}
+        adapterList.bindMovies(shuffledList)
         val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
-        diffResult.dispatchUpdatesTo(adapterList!!)
-//        Toast.makeText(context, "Конец", Toast.LENGTH_SHORT).show()
+        diffResult.dispatchUpdatesTo(adapterList)
+        movies = shuffledList
     }
 
     companion object {
