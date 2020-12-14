@@ -37,9 +37,9 @@ class FragmentMoviesDetails : Fragment() {
         val description: TextView = view.findViewById(R.id.story_line_text_view)
         val poster: ImageView = view.findViewById(R.id.poster_image_view)
 
-        if (activity != null) {
-            val ma = activity as MainActivity?
-            val movie: Movie = ma!!.getMovieIdKey(movieIdKey!!)
+        if (activity != null && movieIdKey !=null) {
+            val ma = activity as MainActivity
+            val movie: Movie = ma.getMovieIdKey(movieIdKey)
 
             nameMovie.text = movie.title
             reviews.text = resources.getString(R.string.reviews, movie.numberOfRatings)
