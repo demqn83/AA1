@@ -12,21 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ru.demqn.appname.data.Movie
-import ru.demqn.appname.data.loadMovies
+import ru.demqn.appname.data.MovieUtil
 
 
 class FragmentMoviesList : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
-    var movies: List<Movie> = listOf()
+    private var movies: List<Movie> = listOf()
     private lateinit var adapterList: MoviesAdapter
     private val scope = CoroutineScope(Dispatchers.Main)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -64,8 +59,8 @@ class FragmentMoviesList : Fragment() {
         }
     }
 
-    suspend fun updtListMovies() = withContext(Dispatchers.Main) {
-        var shuffledList = loadMovies(requireContext()).map {it.copy(ratings = (it.ratings / 2))}
+    suspend fun updtListMovies() {
+        val shuffledList = MovieUtil().getMovies(requireContext()).map { it.copy(ratings = (it.ratings / 2)) }
         adapterList.bindMovies(shuffledList)
         val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
@@ -78,6 +73,6 @@ class FragmentMoviesList : Fragment() {
     }
 
     interface TransactionsFragmentClicks {
-        fun addMovieDetails(movie_id: Int)
+        fun addMovieDetails(movieId: Int)
     }
 }

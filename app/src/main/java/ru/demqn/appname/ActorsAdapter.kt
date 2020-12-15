@@ -1,6 +1,5 @@
 package ru.demqn.appname
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.demqn.appname.data.Actor
 
-class ActorsAdapter(var actors: List<ru.demqn.appname.data.Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
+class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
 
-    fun getItem(position: Int): ru.demqn.appname.data.Actor = actors[position]
+    fun getItem(position: Int): Actor = actors[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
         return ActorsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false))
