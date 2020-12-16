@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         }
     }
 
-    override fun addMovieDetails(id_movie: Int) {
-        fragmentMoviesDetails = FragmentMoviesDetails.newInstance(id_movie)
+    override fun addMovieDetails(movieId: Int) {
+        fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movieId)
         fragmentMoviesDetails?.apply {
             supportFragmentManager.beginTransaction()
                     .addToBackStack(null)

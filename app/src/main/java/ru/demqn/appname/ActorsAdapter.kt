@@ -1,6 +1,5 @@
 package ru.demqn.appname
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.demqn.appname.data.Actor
 
 class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
 
@@ -29,12 +29,10 @@ class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val photoActor: ImageView = itemView.findViewById(R.id.actor_photo_image_view)
 
     fun bind(actor: Actor) {
-        nameActor.text = actor.nameActor
+        nameActor.text = actor.name
         Glide
                 .with(itemView.context)
-                .load(actor.photoActor)
-//            .override(80, 80)
-//            .placeholder(R.drawable.chris_hemsworth)
+                .load(actor.picture)
                 .into(photoActor)
     }
 }
