@@ -1,11 +1,11 @@
-package ru.demqn.appname;
+package ru.demqn.appname
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.demqn.appname.data.Movie;
+import ru.demqn.appname.data.Movie
 
 class MoviesDiffUtilCallback(
-        private val oldList: List<Movie>,
-        private val newList: List<Movie>
+    private val oldList: List<Movie>,
+    private val newList: List<Movie>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

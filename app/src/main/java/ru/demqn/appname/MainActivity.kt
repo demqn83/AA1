@@ -3,7 +3,8 @@ package ru.demqn.appname
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks, FragmentMoviesDetails.ExitFragmentClicks {
+class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks,
+    FragmentMoviesDetails.ExitFragmentClicks {
 
     private var fragmentMoviesList: FragmentMoviesList? = null
     private var fragmentMoviesDetails: FragmentMoviesDetails? = null
@@ -16,13 +17,13 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
             fragmentMoviesList = FragmentMoviesList.newInstance()
             fragmentMoviesList?.apply {
                 supportFragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .add(R.id.container_view, this, FRAGMENT_MOVIE_LIST_TAG)
-                        .commit()
+                    .addToBackStack(null)
+                    .add(R.id.container_view, this, FRAGMENT_MOVIE_LIST_TAG)
+                    .commit()
             }
         } else {
             fragmentMoviesList =
-                    supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
+                supportFragmentManager.findFragmentByTag(FRAGMENT_MOVIE_LIST_TAG) as? FragmentMoviesList
         }
     }
 
@@ -30,9 +31,9 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         fragmentMoviesDetails = FragmentMoviesDetails.newInstance(movieId)
         fragmentMoviesDetails?.apply {
             supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.container_view, this, FRAGMENT_MOVIE_DETAILS_TAG)
-                    .commit()
+                .addToBackStack(null)
+                .replace(R.id.container_view, this, FRAGMENT_MOVIE_DETAILS_TAG)
+                .commit()
         }
     }
 

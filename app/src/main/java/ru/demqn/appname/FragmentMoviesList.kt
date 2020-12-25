@@ -6,14 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ru.demqn.appname.data.Movie
-import ru.demqn.appname.data.MovieUtil
 
 
 class FragmentMoviesList : Fragment() {
@@ -21,11 +18,11 @@ class FragmentMoviesList : Fragment() {
     private var listener: TransactionsFragmentClicks? = null
     private var movies: List<Movie> = listOf()
     private lateinit var adapterList: MoviesAdapter
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val movieListViewModel: MoviesListViewModel by viewModels { MoviesListViewModelFactory() }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
 
@@ -34,7 +31,8 @@ class FragmentMoviesList : Fragment() {
         list.adapter = adapterList
         list.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        scope.launch { updtListMovies() }
+        movieListViewModel.movieList.observe(this.viewLifecycleOwner, this::updtListMovies)
+        movieListViewModel.getMovies(requireContext())
         return view
     }
 
@@ -59,8 +57,8 @@ class FragmentMoviesList : Fragment() {
         }
     }
 
-    suspend fun updtListMovies() {
-        val shuffledList = MovieUtil().getMovies(requireContext()).map { it.copy(ratings = (it.ratings / 2)) }
+    fun updtListMovies(shuffledList: List<Movie>) {
+//        val shuffledList = MovieUtil().getMovies(requireContext()).map { it.copy(ratings = (it.ratings / 2)) }
         adapterList.bindMovies(shuffledList)
         val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)

@@ -14,7 +14,9 @@ class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHo
     fun getItem(position: Int): Actor = actors[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
-        return ActorsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false))
+        return ActorsViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) {
@@ -31,8 +33,8 @@ class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(actor: Actor) {
         nameActor.text = actor.name
         Glide
-                .with(itemView.context)
-                .load(actor.picture)
-                .into(photoActor)
+            .with(itemView.context)
+            .load(actor.picture)
+            .into(photoActor)
     }
 }
