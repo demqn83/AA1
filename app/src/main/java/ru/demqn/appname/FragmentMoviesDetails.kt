@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,7 +28,8 @@ class FragmentMoviesDetails : Fragment() {
 
         val movieIdKey = requireNotNull(arguments?.getInt(MOVIE_ID_KEY))
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        movieDetailsViewModel = MovieDetailsViewModel(movieIdKey)
+//        movieDetailsViewModel = MovieDetailsViewModel(movieIdKey)
+        movieDetailsViewModel = ViewModelProvider(this, MovieDetailsViewModelFactory(movieIdKey)).get(MovieDetailsViewModel::class.java)
 
         movieDetailsViewModel.movie.observe(this.viewLifecycleOwner, this::updMovie)
         movieDetailsViewModel.getMovie(requireContext())
