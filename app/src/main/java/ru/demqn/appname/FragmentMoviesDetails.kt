@@ -29,10 +29,10 @@ class FragmentMoviesDetails : Fragment() {
         val movieIdKey = requireNotNull(arguments?.getInt(MOVIE_ID_KEY))
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
 //        movieDetailsViewModel = MovieDetailsViewModel(movieIdKey)
-        movieDetailsViewModel = ViewModelProvider(this, MovieDetailsViewModelFactory(movieIdKey)).get(MovieDetailsViewModel::class.java)
+        movieDetailsViewModel = ViewModelProvider(this, MovieDetailsViewModelFactory(requireContext(), movieIdKey)).get(MovieDetailsViewModel::class.java)
 
         movieDetailsViewModel.movie.observe(this.viewLifecycleOwner, this::updMovie)
-        movieDetailsViewModel.getMovie(requireContext())
+        movieDetailsViewModel.getMovie()
 
         view.findViewById<ImageView>(R.id.path).setOnClickListener {
             listener?.exitFragment()
@@ -44,10 +44,10 @@ class FragmentMoviesDetails : Fragment() {
         return view
     }
 
-    fun updMovie(movie: Movie) {
+    private fun updMovie(movie: Movie) {
         val view = requireNotNull(view)
 
-        val nameMovie: TextView = view.findViewById<TextView>(R.id.film_name_text_view)
+        val nameMovie: TextView = view.findViewById(R.id.film_name_text_view)
         val reviews: TextView = view.findViewById(R.id.description_rating_text_view)
         val rating: RatingBar = view.findViewById(R.id.rating_bar)
         val movieGenre: TextView = view.findViewById(R.id.movie_genre_text_view)
@@ -58,7 +58,7 @@ class FragmentMoviesDetails : Fragment() {
         nameMovie.text = movie.title
         reviews.text = resources.getString(R.string.reviews, movie.numberOfRatings)
         rating.rating = movie.ratings
-        movieGenre.text = movie.genres.joinToString(transform = { it -> it.name })
+        movieGenre.text = movie.genres.joinToString(transform = { it.name })
         rated.text = resources.getString(R.string.age_min, movie.minimumAge)
         description.text = movie.overview
         Glide

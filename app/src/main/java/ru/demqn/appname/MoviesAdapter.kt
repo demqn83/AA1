@@ -13,7 +13,7 @@ import ru.demqn.appname.data.Movie
 class MoviesAdapter(private var movies: List<Movie>, private var listener: ClickListMovies) :
     RecyclerView.Adapter<DataViewHolder>() {
 
-    fun getItem(position: Int): Movie = movies[position]
+    private fun getItem(position: Int): Movie = movies[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
         return DataViewHolder(
@@ -49,7 +49,7 @@ class DataViewHolder(itemView: View, private var listener: ClickListMovies) :
         nameMovie.text = movie.title
         movieDuration.text = itemView.resources.getString(R.string.min, movie.runtime)
         reviews.text = itemView.resources.getString(R.string.reviews, movie.numberOfRatings)
-        movieGenre.text = movie.genres.joinToString(transform = { it -> it.name })
+        movieGenre.text = movie.genres.joinToString(transform = { it.name })
         rated.text = itemView.resources.getString(R.string.age_min, movie.minimumAge)
         rating.rating = movie.ratings
 

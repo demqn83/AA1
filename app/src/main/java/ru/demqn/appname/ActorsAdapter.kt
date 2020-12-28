@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.demqn.appname.data.Actor
 
-class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
+class ActorsAdapter(private var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
 
-    fun getItem(position: Int): Actor = actors[position]
+    private fun getItem(position: Int): Actor = actors[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
         return ActorsViewHolder(
@@ -19,9 +19,8 @@ class ActorsAdapter(var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHo
         )
     }
 
-    override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) =
         holder.bind(getItem(position))
-    }
 
     override fun getItemCount(): Int = actors.size
 }

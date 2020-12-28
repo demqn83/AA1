@@ -18,7 +18,7 @@ class FragmentMoviesList : Fragment() {
     private var listener: TransactionsFragmentClicks? = null
     private var movies: List<Movie> = listOf()
     private lateinit var adapterList: MoviesAdapter
-    private val movieListViewModel: MoviesListViewModel by viewModels { MoviesListViewModelFactory() }
+    private val movieListViewModel: MoviesListViewModel by viewModels { MoviesListViewModelFactory(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +32,7 @@ class FragmentMoviesList : Fragment() {
         list.layoutManager = GridLayoutManager(requireContext(), 2)
 
         movieListViewModel.movieList.observe(this.viewLifecycleOwner, this::updtListMovies)
-        movieListViewModel.getMovies(requireContext())
+        movieListViewModel.getMovies()
         return view
     }
 
@@ -57,7 +57,7 @@ class FragmentMoviesList : Fragment() {
         }
     }
 
-    fun updtListMovies(shuffledList: List<Movie>) {
+    private fun updtListMovies(shuffledList: List<Movie>) {
 //        val shuffledList = MovieUtil().getMovies(requireContext()).map { it.copy(ratings = (it.ratings / 2)) }
         adapterList.bindMovies(shuffledList)
         val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
