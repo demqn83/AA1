@@ -14,7 +14,6 @@ class MoviesListViewModel(private val getMoviesList: MovieUtil) : ViewModel() {
 
     fun getMovies() {
         viewModelScope.launch {
-//            delay(5000)
             _mutableMovieList.value =
                 getMoviesList.getMovies().map { it.copy(ratings = (it.ratings / 2)) }
         }
