@@ -6,14 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import ru.demqn.appname.data.Movie
-import ru.demqn.appname.data.MovieUtil
 
 
 class FragmentMoviesList : Fragment() {
@@ -21,21 +18,45 @@ class FragmentMoviesList : Fragment() {
     private var listener: TransactionsFragmentClicks? = null
     private var movies: List<Movie> = listOf()
     private lateinit var adapterList: MoviesAdapter
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val movieListViewModel: MoviesListViewModel by viewModels {
+        MoviesListViewModelFactory(
+            requireContext().applicationContext
+        )
+    }
+    private lateinit var list: RecyclerView
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
+        view.initViews()
+        initObserves()
+        loadData()
+        return view
+    }
 
-        val list = view.findViewById<RecyclerView>(R.id.list_movies_recycler_view)
+    private fun View.initViews() {
+        list = findViewById(R.id.list_movies_recycler_view)
         adapterList = MoviesAdapter(movies, clickListMovies)
         list.adapter = adapterList
         list.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
 
-        scope.launch { updtListMovies() }
-        return view
+    private fun initObserves() {
+        movieListViewModel.movieList.observe(this.viewLifecycleOwner, this::updListMovies)
+    }
+
+    private fun loadData() {
+        movieListViewModel.getMovies()
+    }
+
+    private fun updListMovies(shuffledList: List<Movie>) {
+        adapterList.bindMovies(shuffledList)
+        val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(adapterList)
+        movies = shuffledList
     }
 
     override fun onAttach(context: Context) {
@@ -57,15 +78,6 @@ class FragmentMoviesList : Fragment() {
 //            movies[movieId] = movies[movieId].copy(like = !movies[movieId].like)
 //            adapterList?.notifyItemChanged(movieId)
         }
-    }
-
-    suspend fun updtListMovies() {
-        val shuffledList = MovieUtil().getMovies(requireContext()).map { it.copy(ratings = (it.ratings / 2)) }
-        adapterList.bindMovies(shuffledList)
-        val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
-        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
-        diffResult.dispatchUpdatesTo(adapterList)
-        movies = shuffledList
     }
 
     companion object {

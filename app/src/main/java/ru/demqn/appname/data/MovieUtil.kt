@@ -2,7 +2,7 @@ package ru.demqn.appname.data
 
 import android.content.Context
 
-class MovieUtil {
-    suspend fun getMovies(context: Context) = loadMovies(context)
-    suspend fun getMovieById(movieId:Int, context: Context) = loadMovies(context)[movieId]
+class MovieUtil(private val context: Context) {
+    suspend fun getMovies() = loadMovies(context).map { it.copy(ratings = (it.ratings / 2)) }
+    suspend fun getMovieById(movieId: Int) = loadMovies(context).find { it.id == movieId }
 }

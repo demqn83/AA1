@@ -11,16 +11,19 @@ import com.bumptech.glide.Glide
 import ru.demqn.appname.data.Movie
 
 class MoviesAdapter(private var movies: List<Movie>, private var listener: ClickListMovies) :
-        RecyclerView.Adapter<DataViewHolder>() {
+    RecyclerView.Adapter<DataViewHolder>() {
 
-    fun getItem(position: Int): Movie = movies[position]
+    private fun getItem(position: Int): Movie = movies[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
-        return DataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_movie, parent, false), listener)
+        return DataViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.view_holder_movie, parent, false),
+            listener
+        )
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.bind(getItem(position), position)
+        holder.onBind(getItem(position))
     }
 
     override fun getItemCount(): Int = movies.size
@@ -30,7 +33,8 @@ class MoviesAdapter(private var movies: List<Movie>, private var listener: Click
     }
 }
 
-class DataViewHolder(itemView: View, private var listener: ClickListMovies) : RecyclerView.ViewHolder(itemView) {
+class DataViewHolder(itemView: View, private var listener: ClickListMovies) :
+    RecyclerView.ViewHolder(itemView) {
     private val nameMovie: TextView = itemView.findViewById(R.id.nameMovie_text_view)
     private val movieDuration: TextView = itemView.findViewById(R.id.film_duration_text_view)
     private val reviews: TextView = itemView.findViewById(R.id.description_rating_text_view)
@@ -41,21 +45,21 @@ class DataViewHolder(itemView: View, private var listener: ClickListMovies) : Re
     //    private var like: ImageView = itemView.findViewById(R.id.ic_like_image_view)
     private val poster: ImageView = itemView.findViewById(R.id.poster_image_view)
 
-    fun bind(movie: Movie, position: Int) {
+    fun onBind(movie: Movie) {
         nameMovie.text = movie.title
         movieDuration.text = itemView.resources.getString(R.string.min, movie.runtime)
         reviews.text = itemView.resources.getString(R.string.reviews, movie.numberOfRatings)
-        movieGenre.text = movie.genres.joinToString(transform = { it -> it.name })
+        movieGenre.text = movie.genres.joinToString(transform = { it.name })
         rated.text = itemView.resources.getString(R.string.age_min, movie.minimumAge)
-        rating.rating = movie.ratings.toFloat()
+        rating.rating = movie.ratings
 
         Glide
-                .with(itemView.context)
-                .load(movie.poster)
-                .into(poster)
+            .with(itemView.context)
+            .load(movie.poster)
+            .into(poster)
 
         itemView.setOnClickListener {
-            listener.clickAddMovieDetails(position)
+            listener.clickAddMovieDetails(movie.id)
         }
     }
 }
