@@ -8,14 +8,15 @@ import kotlinx.coroutines.launch
 import ru.demqn.appname.data.Movie
 import ru.demqn.appname.data.MovieUtil
 
-class MovieDetailsViewModel(private val getMovie: MovieUtil) :
+class MovieDetailsViewModel(private val mMovieUtil: MovieUtil) :
     ViewModel() {
     private val _mutableMovie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> get() = _mutableMovie
 
     fun getMovie(movieId: Int) {
         viewModelScope.launch {
-            _mutableMovie.value = getMovie.getMovieById(movieId)
+            _mutableMovie.value = mMovieUtil.getMovieByIdAPI(movieId)
+//            _mutableMovie.value = getMovie.getMovieById(movieId)
         }
     }
 }
