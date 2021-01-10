@@ -12,13 +12,10 @@ import ru.demqn.appname.data.*
 class LoadMoviesAPI {
 
     suspend fun nowPlayingData(): List<Movie> {
-        //получить путь - что значят значения -- позже
-        // получить данные из /movie/now_playing
+
         return RetrofitModule.moviesAPI.getNowPlaying().results.map {
 
-            //дозаполнить данные из /movie/{movie_id} так как нет данных по runtime для списка
             val movieExtra = RetrofitModule.moviesAPI.getMovieById(it.id)
-            val actors = RetrofitModule.moviesAPI.getPersonId(it.id)
 
             Movie(
                 it.id,
@@ -31,6 +28,29 @@ class LoadMoviesAPI {
                 if (it.adult) 16 else 13,
                 movieExtra.runtime,
                 movieExtra.genres.map { genr -> Genre(genr.id, genr.name) },
+                listOf()
+            )
+        }
+
+    }
+
+    suspend fun moviesById(movieId: Int): Movie {
+
+        return RetrofitModule.moviesAPI.getMovieById(movieId).run {
+
+            val actors = RetrofitModule.moviesAPI.getPersonId(id)
+
+            Movie(
+                id,
+                title,
+                overview,
+                PATHIMAGE + posterPath,
+                PATHIMAGE + backdropPath,
+                voteAverage / 2,
+                voteCount,
+                if (adult) 16 else 13,
+                runtime,
+                genres.map { genr -> Genre(genr.id, genr.name) },
                 actors.cast.map { actor ->
                     Actor(actor.castId, actor.name, PATHIMAGE + actor.profilePath ?: "")
                 }
@@ -38,6 +58,7 @@ class LoadMoviesAPI {
         }
 
     }
+
 
     private interface MoviesApi {
         @GET("3/movie/now_playing?api_key=$APIKEY&language=$LANGUAGE&page=1")

@@ -15,7 +15,6 @@ class MoviesListViewModel(private val mMovieUtil: MovieUtil) : ViewModel() {
     fun getMovies() {
         viewModelScope.launch {
             _mutableMovieList.value = mMovieUtil.getMoviesAPI()
-//            mMovieUtil.getMoviesAPI()
         }
     }
 }
