@@ -1,4 +1,4 @@
-package ru.demqn.appname
+package ru.demqn.appname.presentation.view
 
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.serialization.ExperimentalSerializationApi
+import ru.demqn.appname.ActorsAdapter
+import ru.demqn.appname.MovieDetailsViewModel
+import ru.demqn.appname.MovieDetailsViewModelFactory
+import ru.demqn.appname.R
 import ru.demqn.appname.data.Movie
 
 
@@ -20,9 +25,7 @@ class FragmentMoviesDetails : Fragment() {
 
     private var listener: ExitFragmentClicks? = null
     private val movieDetailsViewModel: MovieDetailsViewModel by viewModels {
-        MovieDetailsViewModelFactory(
-            requireContext().applicationContext
-        )
+        MovieDetailsViewModelFactory()
     }
     private lateinit var nameMovie: TextView
     private lateinit var reviews: TextView
@@ -33,6 +36,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var poster: ImageView
     private lateinit var list: RecyclerView
 
+    @ExperimentalSerializationApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,6 +70,7 @@ class FragmentMoviesDetails : Fragment() {
         movieDetailsViewModel.movie.observe(this.viewLifecycleOwner, this::updMovie)
     }
 
+    @ExperimentalSerializationApi
     private fun loadData() {
         val movieId = requireNotNull(arguments?.getInt(MOVIE_ID_KEY))
         movieDetailsViewModel.getMovie(movieId)

@@ -1,6 +1,12 @@
 package ru.demqn.appname.data
 
-data class Movie(
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "movies")
+data class Movie @JvmOverloads constructor(
+    @PrimaryKey
     val id: Int,
     val title: String,
     val overview: String,
@@ -10,6 +16,8 @@ data class Movie(
     val numberOfRatings: Int,
     val minimumAge: Int,
     val runtime: Int,
-    val genres: List<Genre>,
-    val actors: List<Actor>
+    @Ignore
+    val genres: List<Genre> = listOf(),
+    @Ignore
+    val actors: List<Actor> = listOf()
 )

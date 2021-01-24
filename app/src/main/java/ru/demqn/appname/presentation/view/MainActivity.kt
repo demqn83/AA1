@@ -1,7 +1,9 @@
-package ru.demqn.appname
+package ru.demqn.appname.presentation.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.demqn.appname.R
+import ru.demqn.appname.di.MoviesApplication
 
 class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks,
     FragmentMoviesDetails.ExitFragmentClicks {
@@ -14,7 +16,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmen
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            fragmentMoviesList = FragmentMoviesList.newInstance()
+            fragmentMoviesList = FragmentMoviesList.newInstance(application as MoviesApplication)
             fragmentMoviesList?.apply {
                 supportFragmentManager.beginTransaction()
                     .addToBackStack(null)

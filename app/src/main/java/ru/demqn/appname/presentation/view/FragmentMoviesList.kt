@@ -1,4 +1,4 @@
-package ru.demqn.appname
+package ru.demqn.appname.presentation.view
 
 import android.content.Context
 import android.os.Bundle
@@ -10,21 +10,23 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.serialization.ExperimentalSerializationApi
+import ru.demqn.appname.*
 import ru.demqn.appname.data.Movie
+import ru.demqn.appname.di.MoviesApplication
 
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
 
     private var listener: TransactionsFragmentClicks? = null
     private var movies: List<Movie> = listOf()
     private lateinit var adapterList: MoviesAdapter
     private val movieListViewModel: MoviesListViewModel by viewModels {
-        MoviesListViewModelFactory(
-            requireContext().applicationContext
-        )
+        MoviesListViewModelFactory(moviesApplication.repository)
     }
     private lateinit var list: RecyclerView
 
+    @ExperimentalSerializationApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +49,7 @@ class FragmentMoviesList : Fragment() {
         movieListViewModel.movieList.observe(this.viewLifecycleOwner, this::updListMovies)
     }
 
+    @ExperimentalSerializationApi
     private fun loadData() {
         movieListViewModel.getMovies()
     }
@@ -81,7 +84,7 @@ class FragmentMoviesList : Fragment() {
     }
 
     companion object {
-        fun newInstance() = FragmentMoviesList()
+        fun newInstance(moviesApplication: MoviesApplication) = FragmentMoviesList(moviesApplication)
     }
 
     interface TransactionsFragmentClicks {
