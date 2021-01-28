@@ -1,6 +1,6 @@
 package ru.demqn.appname.data.network
 
-import ru.demqn.appname.ConfigData
+import ru.demqn.appname.utils.ConfigData
 import ru.demqn.appname.data.Actor
 import ru.demqn.appname.data.Genre
 import ru.demqn.appname.data.Movie

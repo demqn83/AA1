@@ -6,7 +6,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.create
-import ru.demqn.appname.ConfigData
+import ru.demqn.appname.utils.ConfigData
 
 @ExperimentalSerializationApi
 object RetrofitModule {

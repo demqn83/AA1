@@ -1,4 +1,4 @@
-package ru.demqn.appname
+package ru.demqn.appname.utils
 
 object ConfigData {
     const val URLAPITMDB = "https://api.themoviedb.org/"

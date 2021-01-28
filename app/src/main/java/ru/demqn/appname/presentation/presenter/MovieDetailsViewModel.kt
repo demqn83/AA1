@@ -1,4 +1,4 @@
-package ru.demqn.appname
+package ru.demqn.appname.presentation.presenter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

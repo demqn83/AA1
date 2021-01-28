@@ -10,10 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.*
 import ru.demqn.appname.data.Movie
 import ru.demqn.appname.di.MoviesApplication
+import ru.demqn.appname.presentation.presenter.MoviesListViewModel
+import ru.demqn.appname.presentation.presenter.MoviesListViewModelFactory
 
 
 class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
@@ -26,6 +29,7 @@ class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
     }
     private lateinit var list: RecyclerView
 
+    @InternalCoroutinesApi
     @ExperimentalSerializationApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +54,7 @@ class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
     }
 
     @ExperimentalSerializationApi
+    @InternalCoroutinesApi
     private fun loadData() {
         movieListViewModel.getMovies()
     }

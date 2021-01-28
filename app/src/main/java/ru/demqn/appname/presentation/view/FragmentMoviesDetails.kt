@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.ActorsAdapter
-import ru.demqn.appname.MovieDetailsViewModel
-import ru.demqn.appname.MovieDetailsViewModelFactory
+import ru.demqn.appname.presentation.presenter.MovieDetailsViewModel
+import ru.demqn.appname.presentation.presenter.MovieDetailsViewModelFactory
 import ru.demqn.appname.R
 import ru.demqn.appname.data.Movie
 

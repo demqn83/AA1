@@ -2,7 +2,7 @@ package ru.demqn.appname.data.network
 
 import retrofit2.http.GET
 import retrofit2.http.Path
-import ru.demqn.appname.ConfigData
+import ru.demqn.appname.utils.ConfigData
 import ru.demqn.appname.data.Response
 import ru.demqn.appname.data.ResponseActors
 import ru.demqn.appname.data.ResponseMovie
