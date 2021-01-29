@@ -1,10 +1,8 @@
-package ru.demqn.appname.presentation.view
+package ru.demqn.appname.presentation.movieDetails
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -15,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.ActorsAdapter
-import ru.demqn.appname.presentation.presenter.MovieDetailsViewModel
-import ru.demqn.appname.presentation.presenter.MovieDetailsViewModelFactory
 import ru.demqn.appname.R
-import ru.demqn.appname.data.Movie
+import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.di.DI
 
 
-class FragmentMoviesDetails : Fragment() {
+class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
 
     private var listener: ExitFragmentClicks? = null
     private val movieDetailsViewModel: MovieDetailsViewModel by viewModels {
-        MovieDetailsViewModelFactory()
+        MovieDetailsViewModelFactory(DI.repository)
     }
     private lateinit var nameMovie: TextView
     private lateinit var reviews: TextView
@@ -36,17 +33,13 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var poster: ImageView
     private lateinit var list: RecyclerView
 
-    @ExperimentalSerializationApi
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
+    @ExperimentalSerializationApi
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         view.initViews()
         initObserves()
         loadData()
-        return view
     }
 
     private fun View.initViews() {
@@ -107,7 +100,7 @@ class FragmentMoviesDetails : Fragment() {
 
     companion object {
         private const val MOVIE_ID_KEY = "id_movie"
-        fun newInstance(idMovie: Int) = FragmentMoviesDetails().apply {
+        fun newInstance(idMovie: Int) = MoviesDetailsFragment().apply {
             arguments = Bundle().apply {
                 putInt(MOVIE_ID_KEY, idMovie)
             }

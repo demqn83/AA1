@@ -1,4 +1,4 @@
-package ru.demqn.appname.data
+package ru.demqn.appname.data.model
 
 import androidx.room.Entity
 import androidx.room.Ignore

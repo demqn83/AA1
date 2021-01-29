@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.demqn.appname.data.Movie
+import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.presentation.moviesList.MoviesDiffUtilCallback
 
 class MoviesAdapter(private var movies: List<Movie>, private var listener: ClickListMovies) :
     RecyclerView.Adapter<DataViewHolder>() {
@@ -29,6 +31,9 @@ class MoviesAdapter(private var movies: List<Movie>, private var listener: Click
     override fun getItemCount(): Int = movies.size
 
     fun bindMovies(newMovies: List<Movie>) {
+        val diffCallback = MoviesDiffUtilCallback(movies, newMovies)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
         movies = newMovies
     }
 }

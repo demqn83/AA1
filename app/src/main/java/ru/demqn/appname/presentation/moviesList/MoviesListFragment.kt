@@ -1,45 +1,40 @@
-package ru.demqn.appname.presentation.view
+package ru.demqn.appname.presentation.moviesList
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.serialization.ExperimentalSerializationApi
-import ru.demqn.appname.*
-import ru.demqn.appname.data.Movie
-import ru.demqn.appname.di.MoviesApplication
-import ru.demqn.appname.presentation.presenter.MoviesListViewModel
-import ru.demqn.appname.presentation.presenter.MoviesListViewModelFactory
+import ru.demqn.appname.ClickListMovies
+import ru.demqn.appname.MoviesAdapter
+import ru.demqn.appname.R
+import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.di.DI
 
 
-class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
+class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
     private var listener: TransactionsFragmentClicks? = null
     private var movies: List<Movie> = listOf()
     private lateinit var adapterList: MoviesAdapter
+
+    @ExperimentalSerializationApi
     private val movieListViewModel: MoviesListViewModel by viewModels {
-        MoviesListViewModelFactory(moviesApplication.repository)
+        MoviesListViewModelFactory(DI.repository)
     }
     private lateinit var list: RecyclerView
 
     @InternalCoroutinesApi
     @ExperimentalSerializationApi
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         view.initViews()
         initObserves()
         loadData()
-        return view
     }
 
     private fun View.initViews() {
@@ -49,8 +44,9 @@ class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
         list.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
+    @ExperimentalSerializationApi
     private fun initObserves() {
-        movieListViewModel.movieList.observe(this.viewLifecycleOwner, this::updListMovies)
+        movieListViewModel.movieList.observe(viewLifecycleOwner, ::updListMovies)
     }
 
     @ExperimentalSerializationApi
@@ -61,9 +57,6 @@ class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
 
     private fun updListMovies(shuffledList: List<Movie>) {
         adapterList.bindMovies(shuffledList)
-        val diffCallback = MoviesDiffUtilCallback(movies, shuffledList)
-        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffCallback)
-        diffResult.dispatchUpdatesTo(adapterList)
         movies = shuffledList
     }
 
@@ -89,7 +82,8 @@ class FragmentMoviesList(moviesApplication: MoviesApplication) : Fragment() {
     }
 
     companion object {
-        fun newInstance(moviesApplication: MoviesApplication) = FragmentMoviesList(moviesApplication)
+        fun newInstance() =
+            MoviesListFragment()
     }
 
     interface TransactionsFragmentClicks {

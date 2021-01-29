@@ -1,4 +1,4 @@
-package ru.demqn.appname.presentation.presenter
+package ru.demqn.appname.presentation.moviesList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

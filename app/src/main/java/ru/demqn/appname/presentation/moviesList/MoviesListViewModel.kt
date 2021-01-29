@@ -1,11 +1,11 @@
-package ru.demqn.appname.presentation.presenter
+package ru.demqn.appname.presentation.moviesList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
-import ru.demqn.appname.data.Movie
+import ru.demqn.appname.data.model.Movie
 import ru.demqn.appname.data.repositories.MoviesRepository
 
 class MoviesListViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {

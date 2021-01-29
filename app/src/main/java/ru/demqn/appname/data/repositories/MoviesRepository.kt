@@ -1,32 +1,37 @@
 package ru.demqn.appname.data.repositories
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
-import ru.demqn.appname.data.Movie
 import ru.demqn.appname.data.db.MoviesDAO
+import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
-import ru.demqn.appname.di.MoviesApplication
 import kotlin.random.Random
 
-class MoviesRepository(private val moviesDAO: MoviesDAO) {
+class MoviesRepository(
+    private val moviesDAO: MoviesDAO,
+    private val retrofitMoviesApi: MoviesApi,
+    private val moviesNetwork: MoviesNetwork
+) {
 
-    val listMoviesRepository = MutableLiveData<List<Movie>>(emptyList())
+    private var _listMoviesRepository = MutableLiveData<List<Movie>>(emptyList())
+    val listMoviesRepository: LiveData<List<Movie>> get() = _listMoviesRepository
 
     @ExperimentalSerializationApi
     suspend fun getAllMovies() {
 
-        var listMoviesDB: List<Movie>
-        withContext(Dispatchers.IO) { listMoviesDB = moviesDAO.getAllMovies() }
-        listMoviesRepository.value = listMoviesDB
+        _listMoviesRepository.value = moviesDAO.getAllMovies()
 
-        listMoviesDB = MoviesNetwork().nowPlayingData(MoviesApplication().retrofitMoviesApi)
-        listMoviesRepository.value = listMoviesDB
+        val listMoviesDB = moviesNetwork.nowPlayingData(retrofitMoviesApi)
+        _listMoviesRepository.value = listMoviesDB
 
         moviesDAO.deleteALL()
-        moviesDAO.insert(listMoviesDB[Random.nextInt (listMoviesDB.size - 1)])
-        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size-1)])
+        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size - 1)])
+        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size - 1)])
+    }
 
+    suspend fun moviesById(movieId: Int): Movie {
+        return moviesNetwork.moviesById(retrofitMoviesApi, movieId)
     }
 }

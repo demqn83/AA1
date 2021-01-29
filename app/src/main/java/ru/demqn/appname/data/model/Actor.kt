@@ -1,4 +1,4 @@
-package ru.demqn.appname.data
+package ru.demqn.appname.data.model
 
 data class Actor(
     val id: Int,

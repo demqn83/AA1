@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.demqn.appname.data.Actor
+import ru.demqn.appname.data.model.Actor
 
 class ActorsAdapter(private var actors: List<Actor>) : RecyclerView.Adapter<ActorsViewHolder>() {
 

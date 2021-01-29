@@ -1,3 +1,3 @@
-package ru.demqn.appname.data
+package ru.demqn.appname.data.model
 
 data class Genre(val id: Int, val name: String)
