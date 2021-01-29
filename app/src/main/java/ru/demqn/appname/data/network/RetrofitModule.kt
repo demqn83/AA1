@@ -11,7 +11,7 @@ import ru.demqn.appname.utils.ConfigData
 @ExperimentalSerializationApi
 object RetrofitModule {
 
-    var moviesAPI: MoviesApi
+    val moviesAPI: MoviesApi
 
     init {
         val json = Json {
