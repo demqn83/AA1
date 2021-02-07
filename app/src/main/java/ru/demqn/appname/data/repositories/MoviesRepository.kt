@@ -7,7 +7,6 @@ import ru.demqn.appname.data.db.MoviesDAO
 import ru.demqn.appname.data.model.Movie
 import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
-import kotlin.random.Random
 
 class MoviesRepository(
     private val moviesDAO: MoviesDAO,
@@ -21,14 +20,23 @@ class MoviesRepository(
     @ExperimentalSerializationApi
     suspend fun getAllMovies() {
 
-        _listMoviesRepository.value = moviesDAO.getAllMovies()
+        _listMoviesRepository.value = moviesDAO.getAllMovies().map { dbMovie ->
+            val newMovie = dbMovie.movie.copy(genres = dbMovie.genres)
+            newMovie
+        }
 
+    }
+
+    suspend fun updateDB() {
         val listMoviesDB = moviesNetwork.nowPlayingData(retrofitMoviesApi)
-        _listMoviesRepository.value = listMoviesDB
 
-        moviesDAO.deleteALL()
-        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size - 1)])
-        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size - 1)])
+        listMoviesDB.forEach { movie ->
+            moviesDAO.insert(movie)
+            movie.genres.forEach { genre ->
+                moviesDAO.insert(genre)
+            }
+        }
+
     }
 
     suspend fun moviesById(movieId: Int): Movie {

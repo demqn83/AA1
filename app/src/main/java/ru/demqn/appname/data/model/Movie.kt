@@ -1,8 +1,7 @@
 package ru.demqn.appname.data.model
 
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
+
 
 @Entity(tableName = "movies")
 data class Movie @JvmOverloads constructor(
@@ -20,4 +19,12 @@ data class Movie @JvmOverloads constructor(
     val genres: List<Genre> = listOf(),
     @Ignore
     val actors: List<Actor> = listOf()
+)
+
+data class MovieWithGenres (
+    @Embedded
+    val movie: Movie,
+
+    @Relation(parentColumn = "id", entity = Genre::class, entityColumn = "movieId")
+    val genres: List<Genre>
 )
