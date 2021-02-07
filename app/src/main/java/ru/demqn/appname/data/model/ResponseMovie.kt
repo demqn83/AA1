@@ -1,11 +1,11 @@
-package ru.demqn.appname.data
+package ru.demqn.appname.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponseMovie(
-    val genres: List<GenresItem>,
+    val genres: List<ResponseGenresItem>,
     val runtime: Int,
     val id: Int,
     val title: String,
@@ -19,10 +19,4 @@ data class ResponseMovie(
     val voteAverage: Float,
     @SerialName("vote_count")
     val voteCount: Int
-)
-
-@Serializable
-data class GenresItem(
-    val id: Int,
-    val name: String
 )

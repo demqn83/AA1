@@ -1,7 +1,7 @@
-package ru.demqn.appname
+package ru.demqn.appname.presentation.moviesList
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.demqn.appname.data.Movie
+import ru.demqn.appname.data.model.Movie
 
 class MoviesDiffUtilCallback(
     private val oldList: List<Movie>,
