@@ -34,7 +34,7 @@ class MoviesNetwork {
             voteCount,
             if (adult) 16 else 13,
             runtime,
-            genres.map { genr -> Genre(genr.name, id) },
+            genres.map { genr -> Genre(genr.name, id, genr.id) },
             actorsCast.map { actor ->
                 Actor(
                     actor.castId,

@@ -1,10 +1,11 @@
 package ru.demqn.appname.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.data.db.MoviesDAO
 import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.data.model.MovieWithGenres
 import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
 
@@ -14,21 +15,13 @@ class MoviesRepository(
     private val moviesNetwork: MoviesNetwork
 ) {
 
-    private var _listMoviesRepository = MutableLiveData<List<Movie>>(emptyList())
-    val listMoviesRepository: LiveData<List<Movie>> get() = _listMoviesRepository
-
     @ExperimentalSerializationApi
-    suspend fun getAllMovies() {
-
-        _listMoviesRepository.value = moviesDAO.getAllMovies().map { dbMovie ->
-            val newMovie = dbMovie.movie.copy(genres = dbMovie.genres)
-            newMovie
-        }
-
-    }
+    fun getAllMovies(): LiveData<List<MovieWithGenres>> = moviesDAO.getAllMovies()
 
     suspend fun updateDB() {
         val listMoviesDB = moviesNetwork.nowPlayingData(retrofitMoviesApi)
+
+        moviesDAO.deleteALLMovies()
 
         listMoviesDB.forEach { movie ->
             moviesDAO.insert(movie)
@@ -36,7 +29,7 @@ class MoviesRepository(
                 moviesDAO.insert(genre)
             }
         }
-
+        Log.d("TAG", "updateDB")
     }
 
     suspend fun moviesById(movieId: Int): Movie {

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import ru.demqn.appname.data.model.Genre
 import ru.demqn.appname.data.model.Movie
 
-@Database(entities = [Movie::class, Genre::class], version = 20, exportSchema = false)
+@Database(entities = [Movie::class, Genre::class], version = 60, exportSchema = false)
 abstract class MovieRoomDatabase : RoomDatabase() {
     abstract fun movieDao(): MoviesDAO
 

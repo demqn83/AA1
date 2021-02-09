@@ -2,6 +2,7 @@ package ru.demqn.appname.presentation.moviesList
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import ru.demqn.appname.ClickListMovies
 import ru.demqn.appname.MoviesAdapter
 import ru.demqn.appname.R
 import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.data.model.MovieWithGenres
 import ru.demqn.appname.di.DI
 
 
@@ -34,7 +36,6 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         super.onViewCreated(view, savedInstanceState)
         view.initViews()
         initObserves()
-        loadData()
     }
 
     private fun View.initViews() {
@@ -44,20 +45,23 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         list.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    @ExperimentalSerializationApi
-    private fun initObserves() {
-        movieListViewModel.movieList.observe(viewLifecycleOwner, ::updListMovies)
-    }
 
     @ExperimentalSerializationApi
     @InternalCoroutinesApi
-    private fun loadData() {
-        movieListViewModel.getMovies()
+    private fun initObserves() {
+        movieListViewModel.movieList.observe(viewLifecycleOwner, this::updListMovies)
     }
 
-    private fun updListMovies(shuffledList: List<Movie>) {
-        adapterList.bindMovies(shuffledList)
-        movies = shuffledList
+    private fun updListMovies(shuffledList: List<MovieWithGenres>) {
+        val _shuffledList = shuffledList.map { dbMovie ->
+            val newMovie = dbMovie.movie.copy(genres = dbMovie.genres)
+            newMovie
+        }
+
+        adapterList.bindMovies(_shuffledList)
+        movies = _shuffledList
+
+        Log.d("TAG", "updListMovies")
     }
 
     override fun onAttach(context: Context) {

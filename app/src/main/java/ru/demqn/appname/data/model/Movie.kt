@@ -21,7 +21,7 @@ data class Movie @JvmOverloads constructor(
     val actors: List<Actor> = listOf()
 )
 
-data class MovieWithGenres (
+data class MovieWithGenres(
     @Embedded
     val movie: Movie,
 

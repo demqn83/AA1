@@ -1,5 +1,6 @@
 package ru.demqn.appname.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.demqn.appname.data.model.Genre
 import ru.demqn.appname.data.model.Movie
@@ -10,14 +11,18 @@ interface MoviesDAO {
 
     @Transaction
     @Query("SELECT * FROM movies ORDER BY title ASC")
-    suspend fun getAllMovies(): List<MovieWithGenres>
+    fun getAllMovies(): LiveData<List<MovieWithGenres>>
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(movie: Movie)
+    fun insert(movie: Movie)
 
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(genre: Genre)
+    fun insert(genre: Genre)
 
+    @Transaction
     @Query("DELETE FROM movies")
-    suspend fun deleteALL()
+    fun deleteALLMovies()
+
 }
