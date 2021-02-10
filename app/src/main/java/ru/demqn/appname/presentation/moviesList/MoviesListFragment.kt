@@ -14,7 +14,6 @@ import ru.demqn.appname.ClickListMovies
 import ru.demqn.appname.MoviesAdapter
 import ru.demqn.appname.R
 import ru.demqn.appname.data.model.Movie
-import ru.demqn.appname.data.model.MovieWithGenres
 import ru.demqn.appname.di.DI
 
 
@@ -52,14 +51,10 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         movieListViewModel.movieList.observe(viewLifecycleOwner, this::updListMovies)
     }
 
-    private fun updListMovies(shuffledList: List<MovieWithGenres>) {
-        val _shuffledList = shuffledList.map { dbMovie ->
-            val newMovie = dbMovie.movie.copy(genres = dbMovie.genres)
-            newMovie
-        }
+    private fun updListMovies(shuffledList: List<Movie>) {
 
-        adapterList.bindMovies(_shuffledList)
-        movies = _shuffledList
+        adapterList.bindMovies(shuffledList)
+        movies = shuffledList
 
         Log.d("TAG", "updListMovies")
     }

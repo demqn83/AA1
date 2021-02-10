@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.data.db.MoviesDAO
 import ru.demqn.appname.data.model.Movie
-import ru.demqn.appname.data.model.MovieWithGenres
 import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
 
@@ -16,7 +15,7 @@ class MoviesRepository(
 ) {
 
     @ExperimentalSerializationApi
-    fun getAllMovies(): LiveData<List<MovieWithGenres>> = moviesDAO.getAllMovies()
+    fun getAllMovies(): LiveData<List<Movie>> = moviesDAO.getAllMovies()
 
     suspend fun updateDB() {
         val listMoviesDB = moviesNetwork.nowPlayingData(retrofitMoviesApi)
@@ -25,9 +24,6 @@ class MoviesRepository(
 
         listMoviesDB.forEach { movie ->
             moviesDAO.insert(movie)
-            movie.genres.forEach { genre ->
-                moviesDAO.insert(genre)
-            }
         }
         Log.d("TAG", "updateDB")
     }

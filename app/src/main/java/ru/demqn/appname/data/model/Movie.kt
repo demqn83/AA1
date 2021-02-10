@@ -4,6 +4,7 @@ import androidx.room.*
 
 
 @Entity(tableName = "movies")
+@TypeConverters(GenresConverter::class)
 data class Movie @JvmOverloads constructor(
     @PrimaryKey
     val id: Int,
@@ -15,16 +16,7 @@ data class Movie @JvmOverloads constructor(
     val numberOfRatings: Int,
     val minimumAge: Int,
     val runtime: Int,
-    @Ignore
-    val genres: List<Genre> = listOf(),
+    val genres: List<Genre>,
     @Ignore
     val actors: List<Actor> = listOf()
-)
-
-data class MovieWithGenres(
-    @Embedded
-    val movie: Movie,
-
-    @Relation(parentColumn = "id", entity = Genre::class, entityColumn = "movieId")
-    val genres: List<Genre>
 )
