@@ -3,9 +3,7 @@ package ru.demqn.appname.data.model
 import androidx.room.*
 
 
-@Entity(tableName = "movies")
-@TypeConverters(GenresConverter::class)
-data class Movie @JvmOverloads constructor(
+data class Movie (
     @PrimaryKey
     val id: Int,
     val title: String,
@@ -17,6 +15,24 @@ data class Movie @JvmOverloads constructor(
     val minimumAge: Int,
     val runtime: Int,
     val genres: List<Genre>,
-    @Ignore
-    val actors: List<Actor> = listOf()
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "movieId"
+    )
+    val actors: List<Actor>
+)
+
+@Entity(tableName = "movies")
+data class MovieDB (
+    @PrimaryKey
+    val id: Int,
+    val title: String,
+    val overview: String,
+    val poster: String,
+    val backdrop: String,
+    val ratings: Float,
+    val numberOfRatings: Int,
+    val minimumAge: Int,
+    val runtime: Int,
+    val genres: List<Genre> = listOf()
 )

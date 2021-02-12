@@ -39,7 +39,8 @@ class MoviesNetwork {
                 Actor(
                     actor.castId,
                     actor.name,
-                    ConfigData.PATHIMAGE + actor.profilePath
+                    ConfigData.PATHIMAGE + actor.profilePath,
+                    id
                 )
             }
         )

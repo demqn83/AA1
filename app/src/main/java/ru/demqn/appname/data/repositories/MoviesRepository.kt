@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.data.db.MoviesDAO
 import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.data.model.MovieDB
 import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
 
@@ -23,12 +24,29 @@ class MoviesRepository(
         moviesDAO.deleteALLMovies()
 
         listMoviesDB.forEach { movie ->
-            moviesDAO.insert(movie)
+            moviesDAO.insert(
+                MovieDB(
+                    movie.id,
+                    movie.title,
+                    movie.overview,
+                    movie.poster,
+                    movie.backdrop,
+                    movie.ratings,
+                    movie.numberOfRatings,
+                    movie.minimumAge,
+                    movie.runtime,
+                    movie.genres
+                )
+            )
         }
         Log.d("TAG", "updateDB")
     }
 
     suspend fun moviesById(movieId: Int): Movie {
-        return moviesNetwork.moviesById(retrofitMoviesApi, movieId)
+        val movie = moviesNetwork.moviesById(retrofitMoviesApi, movieId)
+        movie.actors.forEach { actor ->
+            moviesDAO.insert(actor)
+        }
+        return movie
     }
 }
