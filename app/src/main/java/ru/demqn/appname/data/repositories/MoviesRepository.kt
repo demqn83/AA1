@@ -1,6 +1,5 @@
 package ru.demqn.appname.data.repositories
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.data.db.MoviesDAO
@@ -8,6 +7,7 @@ import ru.demqn.appname.data.model.Movie
 import ru.demqn.appname.data.model.MovieDB
 import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
+import ru.demqn.appname.di.DI
 
 class MoviesRepository(
     private val moviesDAO: MoviesDAO,
@@ -39,7 +39,8 @@ class MoviesRepository(
                 )
             )
         }
-        Log.d("TAG", "updateDB")
+
+        DI.createNotify("Movie", "Фильм с самым высоким рейтингом", moviesDAO.getMovieMaxRating())
     }
 
     suspend fun moviesById(movieId: Int): Movie {

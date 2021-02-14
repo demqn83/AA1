@@ -2,7 +2,6 @@ package ru.demqn.appname.presentation.moviesList
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -55,8 +54,6 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
 
         adapterList.bindMovies(shuffledList)
         movies = shuffledList
-
-        Log.d("TAG", "updListMovies")
     }
 
     override fun onAttach(context: Context) {

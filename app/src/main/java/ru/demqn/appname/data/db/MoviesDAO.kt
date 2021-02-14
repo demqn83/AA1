@@ -25,4 +25,8 @@ interface MoviesDAO {
     @Query("DELETE FROM movies")
     fun deleteALLMovies()
 
+    @Transaction
+    @Query("SELECT id FROM movies ORDER By ratings DESC LIMIT 1")
+    fun getMovieMaxRating(): Int
+
 }

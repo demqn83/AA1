@@ -1,7 +1,6 @@
 package ru.demqn.appname.data
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.CoroutineScope
@@ -19,10 +18,6 @@ class MoviesWorker(val context: Context, workerParams: WorkerParameters) :
         scope.launch {
             DI.repository.updateDB()
         }
-
-        Log.d("TAG", "Worker")
         return Result.success()
     }
-
-
 }
