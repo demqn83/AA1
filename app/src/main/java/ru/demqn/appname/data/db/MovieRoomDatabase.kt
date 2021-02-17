@@ -4,9 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.demqn.appname.data.model.Movie
+import androidx.room.TypeConverters
+import ru.demqn.appname.data.model.Actor
+import ru.demqn.appname.data.model.GenresConverter
+import ru.demqn.appname.data.model.MovieDB
 
-@Database(entities = [Movie::class], version = 1, exportSchema = false)
+@Database(entities = [MovieDB::class, Actor::class], version = 1, exportSchema = false)
+@TypeConverters(GenresConverter::class)
 abstract class MovieRoomDatabase : RoomDatabase() {
     abstract fun movieDao(): MoviesDAO
 
@@ -22,6 +26,7 @@ abstract class MovieRoomDatabase : RoomDatabase() {
                     MovieRoomDatabase::class.java,
                     "movie_database"
                 )
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 // return instance

@@ -34,7 +34,6 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         super.onViewCreated(view, savedInstanceState)
         view.initViews()
         initObserves()
-        loadData()
     }
 
     private fun View.initViews() {
@@ -44,18 +43,15 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         list.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    @ExperimentalSerializationApi
-    private fun initObserves() {
-        movieListViewModel.movieList.observe(viewLifecycleOwner, ::updListMovies)
-    }
 
     @ExperimentalSerializationApi
     @InternalCoroutinesApi
-    private fun loadData() {
-        movieListViewModel.getMovies()
+    private fun initObserves() {
+        movieListViewModel.movieList.observe(viewLifecycleOwner, this::updListMovies)
     }
 
     private fun updListMovies(shuffledList: List<Movie>) {
+
         adapterList.bindMovies(shuffledList)
         movies = shuffledList
     }

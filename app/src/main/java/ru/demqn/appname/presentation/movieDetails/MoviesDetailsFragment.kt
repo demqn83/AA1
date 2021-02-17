@@ -40,6 +40,7 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         view.initViews()
         initObserves()
         loadData()
+
     }
 
     private fun View.initViews() {
@@ -50,6 +51,7 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         rated = findViewById(R.id.age_limit_text_view)
         description = findViewById(R.id.story_line_text_view)
         poster = findViewById(R.id.poster_image_view)
+
         findViewById<ImageView>(R.id.path).setOnClickListener {
             listener?.exitFragment()
         }
