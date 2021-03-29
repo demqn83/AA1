@@ -40,7 +40,11 @@ class MoviesRepository(
             )
         }
 
-        DI.createNotify("Movie", "Фильм с самым высоким рейтингом", moviesDAO.getMovieMaxRating())
+        DI.notifications.createNotify(
+            "Movie",
+            "Фильм с самым высоким рейтингом",
+            moviesDAO.getMovieMaxRating()
+        )
     }
 
     suspend fun moviesById(movieId: Int): Movie {

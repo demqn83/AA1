@@ -1,16 +1,21 @@
 package ru.demqn.appname.presentation.movieDetails
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.ActorsAdapter
 import ru.demqn.appname.R
@@ -32,6 +37,7 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
     private lateinit var description: TextView
     private lateinit var poster: ImageView
     private lateinit var list: RecyclerView
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
 
     @ExperimentalSerializationApi
@@ -40,7 +46,12 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         view.initViews()
         initObserves()
         loadData()
-
+        view.addListener()
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.container_view
+            scrimColor = Color.TRANSPARENT
+            duration = 2000
+        }
     }
 
     private fun View.initViews() {
@@ -71,6 +82,52 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
         movieDetailsViewModel.getMovie(movieId)
     }
 
+    private fun View.addListener(){
+        findViewById<Button>(R.id.btn_add_calendar).setOnClickListener {
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_CALENDAR
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    Toast.makeText(requireContext(), "Доступ есть", Toast.LENGTH_SHORT)
+                        .show()
+
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) ->
+                    Toast.makeText(requireContext(), "Доступа нет", Toast.LENGTH_SHORT)
+                        .show()
+//                isRationaleShown -> showLocationPermissionDeniedDialog()
+                else -> context?.let {
+                    requestPermissionLauncher.launch(Manifest.permission.WRITE_CALENDAR)
+                }
+            }
+
+
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_CALENDAR
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    Toast.makeText(requireContext(), "Доступ есть", Toast.LENGTH_SHORT)
+                        .show()
+
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR) ->
+                    Toast.makeText(requireContext(), "Доступа нет", Toast.LENGTH_SHORT)
+                        .show()
+//                isRationaleShown -> showLocationPermissionDeniedDialog()
+                else -> context?.let {
+                    requestPermissionLauncher.launch(Manifest.permission.READ_CALENDAR)
+                }
+            }
+
+
+
+
+            listener?.openDatePickerFragment(nameMovie.text.toString())
+        }
+    }
+
     private fun updMovie(movie: Movie) {
         nameMovie.text = movie.title
         reviews.text = resources.getString(R.string.reviews, movie.numberOfRatings)
@@ -93,11 +150,24 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is ExitFragmentClicks) listener = context
+
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "Доступ есть", Toast.LENGTH_SHORT)
+                    .show()
+
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.WRITE_CALENDAR)
+            }
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
+        requestPermissionLauncher.unregister()
     }
 
     companion object {
@@ -111,5 +181,6 @@ class MoviesDetailsFragment : Fragment(R.layout.fragment_movies_details) {
 
     interface ExitFragmentClicks {
         fun exitFragment()
+        fun openDatePickerFragment(nameMovie: String)
     }
 }

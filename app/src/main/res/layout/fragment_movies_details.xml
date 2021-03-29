@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:transitionName="@string/fragmentDetails"
     android:background="@color/mirage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,6 +105,16 @@
             android:textColor="@color/radical_red"
             app:layout_constraintStart_toStartOf="@+id/chain_start_guideline"
             app:layout_constraintTop_toBottomOf="@+id/film_name_text_view" />
+
+        <Button
+            android:id="@+id/btn_add_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/black_alpha_50"
+            android:text="Добавить в календарь"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/chain_end_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/poster_image_view" />
 
         <TextView
             android:id="@+id/description_rating_text_view"
