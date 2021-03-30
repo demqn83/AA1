@@ -17,4 +17,6 @@
     <string name="min">%d min</string>
     <string name="_13">13+</string>
     <string name="age_min">%d+</string>
+    <string name="seeMovie">Посмотреть фильм:</string>
+    <string name="fragmentDetails">fragmentDetails</string>
 </resources>

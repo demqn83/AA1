@@ -9,7 +9,7 @@ class MoviesNetwork {
 
         return retrofitMoviesApi.getNowPlaying().results.map { resultsMovies ->
 
-            retrofitMoviesApi.getMovieById(resultsMovies.id).movieConv(listOf())
+            retrofitMoviesApi.getMovieById(resultsMovies.id).convertMovie(listOf())
         }
 
     }
@@ -18,11 +18,11 @@ class MoviesNetwork {
 
         return retrofitMoviesApi.getMovieById(movieId).run {
             val actorsCast = retrofitMoviesApi.getPersonId(id).cast
-            movieConv(actorsCast)
+            convertMovie(actorsCast)
         }
     }
 
-    private fun ResponseMovie.movieConv(actorsCast: List<CastItem>): Movie {
+    private fun ResponseMovie.convertMovie(actorsCast: List<CastItem>): Movie {
 
         return Movie(
             id,
@@ -34,12 +34,13 @@ class MoviesNetwork {
             voteCount,
             if (adult) 16 else 13,
             runtime,
-            genres.map { genr -> Genre(genr.id, genr.name) },
+            genres.map { genr -> Genre(genr.name) },
             actorsCast.map { actor ->
                 Actor(
                     actor.castId,
                     actor.name,
-                    ConfigData.PATHIMAGE + actor.profilePath
+                    ConfigData.PATHIMAGE + actor.profilePath,
+                    id
                 )
             }
         )

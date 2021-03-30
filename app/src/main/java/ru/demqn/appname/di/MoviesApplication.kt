@@ -6,5 +6,6 @@ class MoviesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         DI.init(this)
+
     }
 }

@@ -51,6 +51,7 @@ class DataViewHolder(itemView: View, private var listener: ClickListMovies) :
     private val poster: ImageView = itemView.findViewById(R.id.poster_image_view)
 
     fun onBind(movie: Movie) {
+        itemView.transitionName = movie.title + movie.id
         nameMovie.text = movie.title
         movieDuration.text = itemView.resources.getString(R.string.min, movie.runtime)
         reviews.text = itemView.resources.getString(R.string.reviews, movie.numberOfRatings)
@@ -64,12 +65,12 @@ class DataViewHolder(itemView: View, private var listener: ClickListMovies) :
             .into(poster)
 
         itemView.setOnClickListener {
-            listener.clickAddMovieDetails(movie.id)
+            listener.clickAddMovieDetails(movie.id, itemView)
         }
     }
 }
 
 interface ClickListMovies {
-    fun clickAddMovieDetails(movieId: Int)
+    fun clickAddMovieDetails(movieId: Int, view: View)
     fun clickLike(movieId: Int)
 }

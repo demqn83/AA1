@@ -1,13 +1,13 @@
 package ru.demqn.appname.data.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.data.db.MoviesDAO
 import ru.demqn.appname.data.model.Movie
+import ru.demqn.appname.data.model.MovieDB
 import ru.demqn.appname.data.network.MoviesApi
 import ru.demqn.appname.data.network.MoviesNetwork
-import kotlin.random.Random
+import ru.demqn.appname.di.DI
 
 class MoviesRepository(
     private val moviesDAO: MoviesDAO,
@@ -15,23 +15,43 @@ class MoviesRepository(
     private val moviesNetwork: MoviesNetwork
 ) {
 
-    private var _listMoviesRepository = MutableLiveData<List<Movie>>(emptyList())
-    val listMoviesRepository: LiveData<List<Movie>> get() = _listMoviesRepository
-
     @ExperimentalSerializationApi
-    suspend fun getAllMovies() {
+    fun getAllMovies(): LiveData<List<Movie>> = moviesDAO.getAllMovies()
 
-        _listMoviesRepository.value = moviesDAO.getAllMovies()
-
+    suspend fun updateDB() {
         val listMoviesDB = moviesNetwork.nowPlayingData(retrofitMoviesApi)
-        _listMoviesRepository.value = listMoviesDB
 
-        moviesDAO.deleteALL()
-        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size - 1)])
-        moviesDAO.insert(listMoviesDB[Random.nextInt(listMoviesDB.size - 1)])
+        moviesDAO.deleteALLMovies()
+
+        listMoviesDB.forEach { movie ->
+            moviesDAO.insert(
+                MovieDB(
+                    movie.id,
+                    movie.title,
+                    movie.overview,
+                    movie.poster,
+                    movie.backdrop,
+                    movie.ratings,
+                    movie.numberOfRatings,
+                    movie.minimumAge,
+                    movie.runtime,
+                    movie.genres
+                )
+            )
+        }
+
+        DI.notifications.createNotify(
+            "Movie",
+            "Фильм с самым высоким рейтингом",
+            moviesDAO.getMovieMaxRating()
+        )
     }
 
     suspend fun moviesById(movieId: Int): Movie {
-        return moviesNetwork.moviesById(retrofitMoviesApi, movieId)
+        val movie = moviesNetwork.moviesById(retrofitMoviesApi, movieId)
+        movie.actors.forEach { actor ->
+            moviesDAO.insert(actor)
+        }
+        return movie
     }
 }

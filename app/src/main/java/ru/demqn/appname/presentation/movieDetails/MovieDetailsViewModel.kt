@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.ExperimentalSerializationApi
 import ru.demqn.appname.data.model.Movie
-import ru.demqn.appname.data.network.MoviesNetwork
 import ru.demqn.appname.data.repositories.MoviesRepository
-import ru.demqn.appname.di.MoviesApplication
 
 class MovieDetailsViewModel(private val repository: MoviesRepository) : ViewModel() {
     private val _movie = MutableLiveData<Movie>()

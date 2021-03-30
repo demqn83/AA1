@@ -3,6 +3,7 @@ package ru.demqn.appname.presentation.moviesList
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,7 +35,8 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         super.onViewCreated(view, savedInstanceState)
         view.initViews()
         initObserves()
-        loadData()
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     private fun View.initViews() {
@@ -44,18 +46,15 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
         list.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    @ExperimentalSerializationApi
-    private fun initObserves() {
-        movieListViewModel.movieList.observe(viewLifecycleOwner, ::updListMovies)
-    }
 
     @ExperimentalSerializationApi
     @InternalCoroutinesApi
-    private fun loadData() {
-        movieListViewModel.getMovies()
+    private fun initObserves() {
+        movieListViewModel.movieList.observe(viewLifecycleOwner, this::updListMovies)
     }
 
     private fun updListMovies(shuffledList: List<Movie>) {
+
         adapterList.bindMovies(shuffledList)
         movies = shuffledList
     }
@@ -71,8 +70,8 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     private val clickListMovies = object : ClickListMovies {
-        override fun clickAddMovieDetails(movieId: Int) {
-            listener?.addMovieDetails(movieId)
+        override fun clickAddMovieDetails(movieId: Int, view: View) {
+            listener?.addMovieDetails(movieId, view)
         }
 
         override fun clickLike(movieId: Int) {
@@ -87,6 +86,6 @@ class MoviesListFragment : Fragment(R.layout.fragment_movies_list) {
     }
 
     interface TransactionsFragmentClicks {
-        fun addMovieDetails(movieId: Int)
+        fun addMovieDetails(movieId: Int, view: View?)
     }
 }
